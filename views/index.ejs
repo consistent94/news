@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>News Aggregator</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: 'Georgia', serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-gray-200">
+    <div class="container mx-auto mt-10 px-6">
+      <header class="flex flex-col items-center mb-12">
+        <h1 class="text-5xl font-bold text-white mb-6">Daily Digest</h1>
+        <form action="/search" method="GET" class="w-full max-w-lg flex">
+          <input
+            class="flex-grow px-4 py-3 rounded-l-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 bg-gray-800 text-gray-200"
+            name="search"
+            type="search"
+            placeholder="Search for news..."
+            aria-label="Search"
+          />
+          <button
+            class="px-6 py-3 bg-gray-700 text-white rounded-r-lg hover:bg-gray-600 transition duration-300"
+            type="submit"
+          >
+            Search
+          </button>
+        </form>
+      </header>
+
+      <div class="flex justify-center mb-10 space-x-4">
+        <form action="/sort-by-date" method="GET">
+          <button
+            class="px-5 py-2 bg-blue-800 text-white rounded-md shadow hover:bg-blue-700 transition duration-300"
+            type="submit"
+          >
+            Sort by Date
+          </button>
+        </form>
+
+        <form action="/news-by-date" method="GET" class="flex items-center">
+          <label for="specific-date" class="text-md text-gray-300 mr-3">
+            Specific Date:
+          </label>
+          <input
+            id="specific-date"
+            class="w-40 px-4 py-2 rounded-md border border-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 bg-gray-800 text-gray-200"
+            name="date"
+            type="date"
+            aria-label="Specific Date"
+          />
+          <button
+            class="ml-4 px-5 py-2 bg-blue-800 text-white rounded-md shadow hover:bg-blue-700 transition duration-300"
+            type="submit"
+          >
+            Get News
+          </button>
+        </form>
+      </div>
+
+      <section class="bg-gray-800 py-8 px-4 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-semibold text-center text-white mb-8">Top Stories</h2>
+        <div id="news-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <% news.forEach(article => { %>
+          <div class="article bg-gray-700 p-6 rounded-lg shadow hover:shadow-xl transition duration-300">
+            <h3 class="text-2xl font-bold text-white mb-3"><%= article.title %></h3>
+            <p class="text-gray-300 mb-5"><%= article.description %></p>
+            <p class="text-gray-400 text-sm mb-3">Published on: <%= article.publishedAt %></p>
+            <a href="<%= article.url %>" class="text-blue-400 font-semibold hover:text-blue-300"
+              >Read more</a
+            >
+          </div>
+          <% }); %>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
