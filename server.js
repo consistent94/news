@@ -25,6 +25,24 @@ app.get("/", async (req, res) => {
     };
 });
 
+app.get("/search", async (req, res) => {
+    try {
+        const searchTerm = req.query.search;
+
+        const response = await axios.get(
+            `https://newsapi.org/v2/everything?q=${searchTerm}&apiKey=${apiKey}`
+        );
+        const data = response.data.articles;
+        const news = data.filter(item => 
+            item.title?.toLowerCase().includes(searchTerm?.toLowerCase())
+        );
+
+        res.render("index", { news });
+    } catch (error) {
+        console.error("There was a problem: ", error);
+        res.status(500).send("There was a problem fetching news. Try again later.")
+    };
+});
 
 app.listen(3000, () => {
     console.log("server listening on port 3000");
