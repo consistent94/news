@@ -44,6 +44,21 @@ app.get("/search", async (req, res) => {
     };
 });
 
+app.get("/sort-by-date", async (req, res) => {
+    try {
+        const response = await axios.get(
+            `https://newsapi.org/v2/everything?q=keyword&apiKey=${apiKey}`
+        );
+        const data = response.data.articles;
+        data.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+
+        res.render("index", { news: data });
+    } catch (error) {
+        console.error("There was problem sorting by date: ", error);
+        res.status(500).send("There was an issue sorting news by date. Try later.")
+    };
+});
+
 app.listen(3000, () => {
     console.log("server listening on port 3000");
 });
