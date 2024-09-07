@@ -59,6 +59,26 @@ app.get("/sort-by-date", async (req, res) => {
     };
 });
 
+app.get("/news-by-date", async (req, res) => {
+    try {
+        const date = req.query.date;
+
+        const response = await axios.get(
+            `https://newsapi.org/v2/everything?q=
+            *&from=${date}&to=${date}
+            &sortBy=popularity&apiKey=${apiKey}`
+        );
+        let data = response.data.articles;
+
+        data = data.filter(item => item.title !== "[Removed]" && item.content)
+
+        res.render("index", { news: data });
+    } catch (error) {
+        console.error("There was a problem fetching by date: ", error);
+        res.status(500).send("There was a problem fetching news. Try again later.")
+    };
+});
+
 app.listen(3000, () => {
     console.log("server listening on port 3000");
 });
